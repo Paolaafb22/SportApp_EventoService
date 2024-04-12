@@ -2,9 +2,9 @@ class ApiError(Exception):
     code = 422
     description = "Default message"
 
-class ExercisesAlreadyExists(ApiError):
+class EventosAlreadyExists(ApiError):
     code = 412
-    description = "Exercise already exists"
+    description = "Evento already exists"
 
 class UserNotFoundError(ApiError):
     code = 404
@@ -70,6 +70,6 @@ class InvalidParams(ApiError):
     code = 400
     description = "Bad request"
 
-class ExerciseNotFoundError(ApiError):
+class EventoNotFoundError(ApiError):
     code = 404
-    description = "Exercise does not exist"
+    description = "Evento does not exist"
