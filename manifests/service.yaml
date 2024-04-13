@@ -9,8 +9,13 @@ spec:
     app: entrenamiento
 
   ports:
+<<<<<<< HEAD
     - port: 5002
       targetPort: 5002
+=======
+    - port: 5000
+      targetPort: 5000
+>>>>>>> 9098effec7dd0f30314f3866a5bcae0302d6275e
 
   type: LoadBalancer
 
