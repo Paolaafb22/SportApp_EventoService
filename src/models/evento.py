@@ -1,40 +1,24 @@
-from marshmallow import  Schema, fields
-from sqlalchemy import Column, String, Boolean
-from .model import Model, Base
-from datetime import datetime, timedelta
+from dataclasses import dataclass
+from datetime import datetime
+from typing import List
+from enum import Enum
 
-class Evento(Model, Base):
-  __tablename__ = 'eventos'
+class Nivel(Enum):
+    BASICO = "Básico"
+    INTERMEDIO = "Intermedio"
+    AVANZADO = "Avanzado"
 
-  nombre = Column(String)
-  fecha = Column(String)
-  lugar = Column(String)
-  descripcion = Column(String)
-  nivel = Column(String)
+@dataclass
+class DeportistaEvento:
+    id_evento: str
+    id_deportista: str
 
-  def __init__(self, nombre, fecha, lugar,descripcion,nivel):
-    Model.__init__(self)
-    self.nombre = nombre
-    self.fecha = fecha
-    self.lugar = lugar
-    self.descripcion = descripcion
-    self.nivel = nivel
-    
-class EventoSchema(Schema):
-  id = fields.Number()
-  nombre = fields.Str()
-  fecha = fields.Str()
-  lugar = fields.Str()
-  descripcion = fields.Str()
-  nivel = fields.Str()
-
-
-class servicioLogisticoJsonSchema(Schema):
-  id = fields.Number()
-  nombre = fields.Str()
-  estado = fields.Bool()
-  url_imagen = fields.Str()
-  expireAt = fields.DateTime()
-  createdAt = fields.DateTime()
-  
-  
+@dataclass
+class Evento:
+    id_evento: str
+    nombre: str
+    fecha_evento: datetime
+    id_socio: str
+    descripcion:str
+    nivel: Nivel
+    estado: bool

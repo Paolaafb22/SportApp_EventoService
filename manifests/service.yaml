@@ -1,21 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: entrenamiento
+  name: evento
   labels:
-    app: entrenamiento
+    app: evento
 spec:
+  type: ClusterIP
   selector:
-    app: entrenamiento
+    app: evento
 
   ports:
-<<<<<<< HEAD
-    - port: 5002
+    - port: 80
       targetPort: 5002
-=======
-    - port: 5000
-      targetPort: 5000
->>>>>>> 9098effec7dd0f30314f3866a5bcae0302d6275e
-
-  type: LoadBalancer
-
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: evento-ingress
+  
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: a1b7563a0858f4f71b48c713a5de8c20-991979942.us-east-1.elb.amazonaws.com
+      http:
+        paths:
+          - path: /eventos
+            pathType: Prefix
+            backend:
+              service:
+                name: eventos
+                port:
+                  number: 80

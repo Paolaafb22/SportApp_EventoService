@@ -1,3 +1,3 @@
-# SportApp_EntrenamientoServices
-SportApp Entrenamiento Services
+# SportApp_EventosServices
+SportApp Eventos Services
 
