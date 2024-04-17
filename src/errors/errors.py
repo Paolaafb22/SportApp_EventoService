@@ -2,9 +2,9 @@ class ApiError(Exception):
     code = 422
     description = "Default message"
 
-class EventosAlreadyExists(ApiError):
+class EventoAlreadyExists(ApiError):
     code = 412
-    description = "Evento already exists"
+    description = "Event already exists"
 
 class UserNotFoundError(ApiError):
     code = 404
@@ -72,4 +72,4 @@ class InvalidParams(ApiError):
 
 class EventoNotFoundError(ApiError):
     code = 404
-    description = "Evento does not exist"
+    description = "Event does not exist"
