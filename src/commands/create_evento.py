@@ -1,7 +1,7 @@
 import uuid
 from .base_command import BaseCommannd
 #from ..models.entrenamiento import Entrenamiento
-from ..models.evento import Evento, DeportistaEvento
+from ..models.evento import Evento
 from ..errors.errors import IncompleteParams, InvalidNombreError, EventoAlreadyExists
 from ..dynamodb_evento import DynamoDbEvento
 
