@@ -1,48 +1,27 @@
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
-<<<<<<< HEAD
-  name: eventos
+  name: evento
   labels: 
-    app: eventos
-=======
-  name: entrenamiento
-  labels: 
-     app: entrenamiento
->>>>>>> 9098effec7dd0f30314f3866a5bcae0302d6275e
+     app: evento
 
 spec:
   replicas: 1 
   selector:
     matchLabels:
-<<<<<<< HEAD
-      app: eventos
-=======
-      app: entrenamiento
->>>>>>> 9098effec7dd0f30314f3866a5bcae0302d6275e
+      app: evento
 
   template:
     metadata:
       labels:
-<<<<<<< HEAD
-        app: eventos
+        app: evento
     spec:
       containers:
-      - name: eventos
+      - name: evento
         image: DOCKER_IMAGE
         imagePullPolicy: Always
         ports:
         - containerPort: 5002
-=======
-        app: entrenamiento
-    spec:
-      containers:
-      - name: entrenamiento
-        image: DOCKER_IMAGE
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 5000
->>>>>>> 9098effec7dd0f30314f3866a5bcae0302d6275e
         env:
         - name: AWS_ACCESS_KEY_ID
           value: ENV1

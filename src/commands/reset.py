@@ -1,8 +1,7 @@
 from .base_command import BaseCommannd
-from ..session import Session, engine
-from ..models.model import Base
+from ..dynamodb_evento import DynamoDbEvento
 
 class Reset(BaseCommannd):  
   def execute(self):
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(engine)
+    DynamoDbEvento().deleteTable()
+    DynamoDbEvento().create_table()
