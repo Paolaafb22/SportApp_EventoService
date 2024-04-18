@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
 env:
-  ECR_REPOSITORY: evento
+  ECR_REPOSITORY: eventos
   EKS_CLUSTER_NAME: sportapp
   AWS_REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
