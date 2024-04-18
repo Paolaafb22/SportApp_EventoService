@@ -9,11 +9,6 @@ class Nivel(Enum):
     AVANZADO = "Avanzado"
 
 @dataclass
-class DeportistaEvento:
-    id_evento: str
-    id_deportista: str
-
-@dataclass
 class Evento:
     id_evento: str
     nombre: str

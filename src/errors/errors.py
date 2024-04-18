@@ -6,6 +6,10 @@ class EventoAlreadyExists(ApiError):
     code = 412
     description = "Event already exists"
 
+class EventoAlreadyExistsInUser(ApiError):
+    code = 412
+    description = "Event already exists for user"
+
 class UserNotFoundError(ApiError):
     code = 404
     description = "User with username and password does not exist"
