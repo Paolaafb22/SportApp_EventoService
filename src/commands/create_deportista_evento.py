@@ -11,7 +11,7 @@ class CreateDeportaistaEvento(BaseCommannd):
   def execute(self):
     try:
       
-      posted_evento = DeportistaEvento(self.data["id_usuario"],self.data['id_evento'], self.data['fecha_suscripcion'], 
+      posted_evento = DeportistaEvento(str(uuid.uuid4()),self.data["id_usuario"],self.data['id_evento'], self.data['fecha_suscripcion'], 
                                            self.data['estado_suscripcion'])
             
       print(posted_evento)
@@ -31,7 +31,7 @@ class CreateDeportaistaEvento(BaseCommannd):
       raise IncompleteParams()
   
   def evento_exist(self, id_usuario, id_evento):
-    result = DynamoDbDeportistaEvento().get_Item_usuario(id_usuario, id_evento)
+    result = DynamoDbDeportistaEvento().exit_event_usuario(id_usuario, id_evento)
     if result is None:
       return False
     else:
