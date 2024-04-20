@@ -49,6 +49,7 @@ class DynamoDbEvento():
         item = {
             "id_evento": {'S':  evento.id_evento },
             'nombre': {'S': evento.nombre },
+            'lugar': {'S': evento.lugar },
             'fecha_evento': {'S': evento.fecha_evento},  # Datetime conversion
             'id_socio': {'S': evento.id_socio },
             'descripcion': {'S': evento.descripcion },
@@ -78,6 +79,7 @@ class DynamoDbEvento():
         # Extrae los valores de cada campo
         id_evento = item['id_evento']['S']
         nombre = item['nombre']['S']
+        lugar = item['lugar']['S']
         fecha_evento = item['fecha_evento']['S']
         id_socio = item['id_socio']['S']
         descripcion = item['descripcion']['S']
@@ -85,7 +87,7 @@ class DynamoDbEvento():
         estado = item['estado']['BOOL']
 
         # Crea una instancia de la clase Entrenamiento
-        evento = Evento(id_evento,nombre, fecha_evento, id_socio,descripcion,nivel, estado)
+        evento = Evento(id_evento,nombre, lugar, fecha_evento, id_socio,descripcion,nivel, estado)
 
         return evento
 
@@ -116,6 +118,7 @@ class DynamoDbEvento():
         for item in items:
             id_evento = item['id_evento']['S']
             nombre = item['nombre']['S']
+            lugar = item['lugar']['S']
             fecha_evento = item['fecha_evento']['S']
             id_socio = item['id_socio']['S']
             descripcion = item['descripcion']['S']
@@ -123,7 +126,46 @@ class DynamoDbEvento():
             estado = item['estado']['BOOL']
     
 
-            evento = Evento(id_evento,nombre, fecha_evento, id_socio,descripcion,nivel, estado)
+            evento = Evento(id_evento,nombre, lugar, fecha_evento, id_socio,descripcion,nivel, estado)
+            resultados.append(evento)
+
+        return resultados
+
+    def recomendar_items(self,ciudad,fecha_prevista):
+        # Parámetros para la operación de escaneo
+        parametros = {
+            'TableName': self.table_name,
+            'FilterExpression': '#lugar = :lugar',
+            'ExpressionAttributeNames': {
+                '#lugar': 'lugar'
+            },
+            'ExpressionAttributeValues': {
+                ':lugar': {'S': ciudad}
+            }
+        }
+    
+        # Realizar el escaneo
+        response = self.dynamodb.scan(**parametros)
+        print(response)
+        # Obtener los items encontrados
+        items = response.get('Items', [])
+        if not items:
+            return None
+        
+        # Procesar los items encontrados
+        resultados = []
+        for item in items:
+            id_evento = item['id_evento']['S']
+            nombre = item['nombre']['S']
+            lugar = item['lugar']['S']
+            fecha_evento = item['fecha_evento']['S']
+            id_socio = item['id_socio']['S']
+            descripcion = item['descripcion']['S']
+            nivel = item['nivel']['S']
+            estado = item['estado']['BOOL']
+    
+
+            evento = Evento(id_evento,nombre, lugar, fecha_evento, id_socio,descripcion,nivel, estado)
             resultados.append(evento)
 
         return resultados
