@@ -33,10 +33,7 @@ class DynamoDbEvento():
                             'KeyType': 'HASH'  # Clave de partición
                         }
                     ],        
-                    ProvisionedThroughput={
-                    'ReadCapacityUnits': 5,
-                    'WriteCapacityUnits': 5,
-                    } 
+                    BillingMode='PAY_PER_REQUEST'
                 )
             
             # Espera hasta que la tabla exista
@@ -132,6 +129,7 @@ class DynamoDbEvento():
         return resultados
 
     def recomendar_items(self,ciudad,fecha_prevista):
+        
         # Parámetros para la operación de escaneo
         parametros = {
             'TableName': self.table_name,
@@ -143,6 +141,21 @@ class DynamoDbEvento():
                 ':lugar': {'S': ciudad}
             }
         }
+        if(ciudad and fecha_prevista):
+            # Parámetros para la operación de escaneo
+            parametros = {
+                'TableName': self.table_name,
+                'FilterExpression': '#lugar = :lugar AND contains(#fecha_evento, :fecha_evento)',
+                'ExpressionAttributeNames': {
+                    '#lugar': 'lugar',
+                    '#fecha_evento': 'fecha_evento'
+                },
+                'ExpressionAttributeValues': {
+                    ':lugar': {'S': ciudad},
+                    ':fecha_evento': {'S': fecha_prevista}
+                }
+            }
+        
     
         # Realizar el escaneo
         response = self.dynamodb.scan(**parametros)
