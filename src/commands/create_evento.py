@@ -12,7 +12,7 @@ class CreateEvento(BaseCommannd):
   def execute(self):
     try:
       
-      posted_evento = Evento(str(uuid.uuid4()),self.data['nombre'], self.data['fecha_evento'], 
+      posted_evento = Evento(str(uuid.uuid4()),self.data['nombre'], self.data['lugar'],self.data['fecha_evento'], 
                                            self.data['id_socio'],self.data['descripcion'],self.data['nivel'],
                                            self.data['estado'])
             

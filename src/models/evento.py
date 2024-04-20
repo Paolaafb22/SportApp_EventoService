@@ -12,6 +12,7 @@ class Nivel(Enum):
 class Evento:
     id_evento: str
     nombre: str
+    lugar: str
     fecha_evento: datetime
     id_socio: str
     descripcion:str

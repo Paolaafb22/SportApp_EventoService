@@ -77,3 +77,7 @@ class InvalidParams(ApiError):
 class EventoNotFoundError(ApiError):
     code = 404
     description = "Event does not exist"
+
+class RecomendationsNotFoundError(ApiError):
+    code = 404
+    description = "Recommendation not found"
