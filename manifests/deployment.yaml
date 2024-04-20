@@ -1,23 +1,23 @@
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
-  name: evento
+  name: eventos
   labels: 
-     app: evento
+     app: eventos
 
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: evento
+      app: eventos
 
   template:
     metadata:
       labels:
-        app: evento
+        app: eventos
     spec:
       containers:
-      - name: evento
+      - name: eventos
         image: DOCKER_IMAGE
         imagePullPolicy: Always
         ports:
