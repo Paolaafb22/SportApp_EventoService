@@ -22,13 +22,13 @@ class DynamoDbDeportistaEvento():
                     TableName=self.table_name,
                     AttributeDefinitions=[
                         {
-                            'AttributeName': 'id_usuario',
+                            'AttributeName': 'id_usuario_evento',
                             'AttributeType': 'S',
                         }
                     ],
                     KeySchema=[
                         {
-                            'AttributeName': 'id_usuario',
+                            'AttributeName': 'id_usuario_evento',
                             'KeyType': 'HASH'  # Clave de partición
                         }
                     ],        
@@ -46,8 +46,9 @@ class DynamoDbDeportistaEvento():
 
     def insert_item(self,evento_deportista: DeportistaEvento):
         item = {
+            "id_usuario_evento":{'S': evento_deportista.id_usuario_evento},
             "id_usuario": {'S':  evento_deportista.id_usuario  },
-            'id_evento ': {'S': evento_deportista.id_evento  },
+            'id_evento': {'S': evento_deportista.id_evento  },
             'fecha_suscripcion': {'S': evento_deportista.fecha_suscripcion},
             'estado_suscripcion': {'BOOL': evento_deportista.estado_suscripcion }
             # Puedes agregar más atributos según la definición de tu tabla
@@ -84,17 +85,18 @@ class DynamoDbDeportistaEvento():
         # Procesar los items encontrados
         resultados = []
         for item in items:
+            id_usuario_evento = item['id_usuario_evento']['S']
             id_usuario = item['id_usuario']['S']
             id_evento = item['id_evento']['S']
             fecha_suscripcion = item['fecha_suscripcion']['S']
             estado_suscripcion = item['estado_suscripcion']['BOOL']    
 
-            evento = DeportistaEvento(id_usuario,id_evento, fecha_suscripcion, estado_suscripcion)
+            evento = DeportistaEvento(id_usuario_evento,id_usuario,id_evento, fecha_suscripcion, estado_suscripcion)
             resultados.append(evento)
 
         return resultados
-
-    def get_Item_usuario(self, id_usuario, id_evento):
+    
+    def exit_event_usuario(self, id_usuario, id_evento):
         # Parámetros para la operación de escaneo
         parametros = {
             'TableName': self.table_name,
@@ -120,16 +122,17 @@ class DynamoDbDeportistaEvento():
         # Procesar los items encontrados
         resultados = []
         for item in items:
+            id_usuario_evento = item['id_usuario_evento']['S']
             id_usuario = item['id_usuario']['S']
             id_evento = item['id_evento']['S']
             fecha_suscripcion = item['fecha_suscripcion']['S']
             estado_suscripcion = item['estado_suscripcion']['BOOL']    
 
-            evento = DeportistaEvento(id_usuario,id_evento, fecha_suscripcion, estado_suscripcion)
+            evento = DeportistaEvento(id_usuario_evento, id_usuario,id_evento, fecha_suscripcion, estado_suscripcion)
             resultados.append(evento)
 
         return resultados
-
+    
     def tablaExits(self,name):
         try:
             response = self.dynamodb.describe_table(TableName=name)
