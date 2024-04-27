@@ -8,6 +8,7 @@ class DeportistaEvento:
     id_evento: str
     fecha_suscripcion: datetime
     estado_suscripcion: bool
+    fecha_asistio: datetime = None
     
 @dataclass
 class DeportistaEventosJson:
@@ -16,4 +17,4 @@ class DeportistaEventosJson:
     id_evento: str
     fecha_suscripcion: datetime
     estado_suscripcion: bool
-    evento: Evento   
+    evento: Evento 

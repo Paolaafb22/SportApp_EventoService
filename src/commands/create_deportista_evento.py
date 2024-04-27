@@ -12,7 +12,7 @@ class CreateDeportaistaEvento(BaseCommannd):
     try:
       
       posted_evento = DeportistaEvento(str(uuid.uuid4()),self.data["id_usuario"],self.data['id_evento'], self.data['fecha_suscripcion'], 
-                                           self.data['estado_suscripcion'])
+                                           self.data['estado_suscripcion'], fecha_asistio=None)
             
       print(posted_evento)
       '''
