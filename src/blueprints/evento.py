@@ -5,6 +5,7 @@ from ..commands.reset import Reset
 from ..commands.create_deportista_evento import CreateDeportaistaEvento
 from ..commands.get_deportista_evento import GetDeportistaEvento
 from ..commands.buscar_eventos_recomendados import BuscarEventosRecomendados
+from ..commands.get_deportista_evento_asistio import GetDeportistaAsistioEvento
 
 eventos_blueprint = Blueprint('eventos', __name__)
 
@@ -43,6 +44,12 @@ def show_deportista_evento(id):
 def recomendar_eventos():
     eventos_recomendos = BuscarEventosRecomendados(request.get_json()).execute()
     return jsonify(eventos_recomendos), 201
+
+@eventos_blueprint.route('/eventos/user/asistio/<id>/<dias>', methods = ['GET'])
+def show_deportista_evento_asistio(id,dias):
+    """ Authenticate(auth_token()).execute() """
+    evento = GetDeportistaAsistioEvento(id,dias).execute() 
+    return jsonify(evento)
 
 
 def auth_token():

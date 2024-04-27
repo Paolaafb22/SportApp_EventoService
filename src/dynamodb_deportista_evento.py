@@ -50,6 +50,12 @@ class DynamoDbDeportistaEvento():
             'estado_suscripcion': {'BOOL': evento_deportista.estado_suscripcion }
             # Puedes agregar más atributos según la definición de tu tabla
         }
+
+        if evento_deportista.fecha_asistio is not None:
+            item['fecha_asistio'] = {'S': evento_deportista.fecha_asistio}
+        else:
+            item['fecha_asistio'] = {'S': '' }
+
         result = self.dynamodb.put_item(
             TableName=self.table_name,
             Item=item,
@@ -86,9 +92,10 @@ class DynamoDbDeportistaEvento():
             id_usuario = item['id_usuario']['S']
             id_evento = item['id_evento']['S']
             fecha_suscripcion = item['fecha_suscripcion']['S']
-            estado_suscripcion = item['estado_suscripcion']['BOOL']    
+            estado_suscripcion = item['estado_suscripcion']['BOOL']
+            fecha_asistio =item['fecha_asistio']['S']
 
-            evento = DeportistaEvento(id_usuario_evento,id_usuario,id_evento, fecha_suscripcion, estado_suscripcion)
+            evento = DeportistaEvento(id_usuario_evento,id_usuario,id_evento, fecha_suscripcion, estado_suscripcion, fecha_asistio)
             resultados.append(evento)
 
         return resultados
@@ -129,6 +136,44 @@ class DynamoDbDeportistaEvento():
             resultados.append(evento)
 
         return resultados
+    
+    def get_eventos_asistio_ultimos_dias(self,id_usuario,fecha_desde, fecha_actual):
+        
+        # Parámetros para la operación de escaneo
+        parametros = {
+            'TableName': self.table_name,
+            'FilterExpression': '#id_usuario = :id_usuario AND #fecha_asistio >= :fecha_desde AND #fecha_asistio <= :fecha_actual',
+            'ExpressionAttributeNames': {
+                '#id_usuario': 'id_usuario',
+                '#fecha_asistio': 'fecha_asistio'
+            },
+            'ExpressionAttributeValues': {
+                ':id_usuario': {'S': id_usuario},
+                ':fecha_desde': {'S': fecha_desde},
+                ':fecha_actual': {'S': fecha_actual}
+            }
+        }
+    
+        # Realizar el escaneo
+        response = self.dynamodb.scan(**parametros)
+        print(response)
+        # Obtener los items encontrados
+        items = response.get('Items', [])
+        
+        # Procesar los items encontrados
+        resultados = []
+        for item in items:
+            id_usuario_evento = item['id_usuario_evento']['S']
+            id_usuario = item['id_usuario']['S']
+            id_evento = item['id_evento']['S']
+            fecha_suscripcion = item['fecha_suscripcion']['S']
+            estado_suscripcion = item['estado_suscripcion']['BOOL']    
+            fecha_asistio =item['fecha_asistio']['S']
+            evento = DeportistaEvento(id_usuario_evento,id_usuario,id_evento, fecha_suscripcion, estado_suscripcion,fecha_asistio)
+            resultados.append(evento)
+
+        return resultados
+
     
     def tablaExits(self,name):
         try:
