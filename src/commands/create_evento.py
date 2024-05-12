@@ -29,7 +29,7 @@ class CreateEvento(BaseCommannd):
       return posted_evento
         
     except TypeError as te:
-      print("Error en el primer try:", str(te))
+      #print("Error en el primer try:", str(te))
       raise IncompleteParams()
   
   def evento_exist(self, nombre):
