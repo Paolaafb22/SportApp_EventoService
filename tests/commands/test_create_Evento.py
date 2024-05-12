@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from src.commands.create_evento import CreateEvento
-from src.errors.errors import InvalidNombreError, EventoAlreadyExists, IncompleteParams
+from src.errors.errors import InvalidNombreError, EventoAlreadyExists, IncompleteParams 
 from src.models.evento import Evento
 from faker import Faker
 import random
@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 class TestCreateEvento(unittest.TestCase):
     def setUp(self):
-        '''Crea una isntancia de Faker'''
+        '''Crea una instancia de Faker'''
         self.data_factory = Faker()
 
         '''Se programa para que Faker cree los mismos datos cuando se ejecuta'''
@@ -43,6 +43,7 @@ class TestCreateEvento(unittest.TestCase):
 
     @patch('src.commands.create_evento.DynamoDbEvento')
     def test_crear_evento(self, mock_dynamodb_evento):
+        '''1.Crea un nuevo evento'''
         mock_dynamodb_evento_instance = mock_dynamodb_evento.return_value
         mock_dynamodb_evento_instance.get_Item_nombre.return_value = None
         mock_dynamodb_evento_instance.insert_item.return_value = None
@@ -52,8 +53,9 @@ class TestCreateEvento(unittest.TestCase):
         self.assertIsInstance(resultado, Evento)
         mock_dynamodb_evento_instance.insert_item.assert_called_once()
 
-    '''@patch('src.commands.create_evento.DynamoDbEvento')
+    @patch('src.commands.create_evento.DynamoDbEvento')
     def test_evento_existente(self, mock_dynamodb_evento):
+        '''2.Crea un nuevo evento con el mismo nombre de un evento existente'''
         mock_dynamodb_evento_instance = mock_dynamodb_evento.return_value
         mock_dynamodb_evento_instance.get_Item_nombre.return_value = {'nombre': self.data['nombre']}
 
@@ -61,26 +63,23 @@ class TestCreateEvento(unittest.TestCase):
             self.create_evento.execute()
 
     def test_nombre_invalido(self):
-        data_invalida = self.data.copy()
-        data_invalida['nombre'] = ''
+            '''3.Crea un nuevo evento con nombre invalido'''
+            data_invalida = self.data.copy()
+            data_invalida['nombre'] = ''
 
-        create_evento_invalido = CreateEvento(data_invalida)
+            create_evento_invalido = CreateEvento(data_invalida)
 
-        with self.assertRaises(InvalidNombreError):
-            create_evento_invalido.execute()
+            with self.assertRaises(InvalidNombreError):
+                create_evento_invalido.execute()
 
-    @patch('src.commands.create_evento.DynamoDbEvento')
-    def test_datos_incompletos(self, mock_dynamodb_evento):
-        mock_dynamodb_evento_instance = mock_dynamodb_evento.return_value
-        mock_dynamodb_evento_instance.get_Item_nombre.return_value = None
-
-        data_incompleta = self.data.copy()
-        del data_incompleta['descripcion']
-
-        create_evento_incompleto = CreateEvento(data_incompleta)
+    @patch('src.commands.create_evento.Evento')
+    def test_datos_incompletos(self, mock_evento):
+        '''4.Simular un TypeError al crear la instancia de Evento'''
+        # Simular un TypeError al crear la instancia de Evento
+        mock_evento.side_effect = TypeError('Error de tipo en la creación de Evento')
 
         with self.assertRaises(IncompleteParams):
-            create_evento_incompleto.execute()'''
+            self.create_evento.execute()
 
-if __name__ == '__main__':
-    unittest.main()
+    if __name__ == '__main__':
+        unittest.main()

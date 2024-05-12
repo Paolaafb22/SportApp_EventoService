@@ -11,12 +11,12 @@ class CreateEvento(BaseCommannd):
   
   def execute(self):
     try:
-      
+                    
       posted_evento = Evento(str(uuid.uuid4()),self.data['nombre'], self.data['lugar'],self.data['fecha_evento'], 
                                           self.data['id_socio'],self.data['descripcion'],self.data['nivel'],
                                           self.data['estado'])
             
-      print(posted_evento)
+      #print(posted_evento)
       
       if not self.verificar_datos(self.data['nombre']):
         raise InvalidNombreError
